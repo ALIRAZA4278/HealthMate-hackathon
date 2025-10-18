@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm run dev:*)",
+      "Bash(node:*)",
+      "Bash(set PORT=3000)",
+      "Bash($env:PORT=3000)",
+      "Bash(npx kill-port 3000 5000)",
+      "Bash(npx kill-port 5000)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

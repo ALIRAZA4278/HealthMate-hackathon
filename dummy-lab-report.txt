@@ -1,0 +1,131 @@
+================================================================================
+                        CITY HOSPITAL LABORATORY
+                      123 Medical Center, Karachi
+                    Tel: +92-21-1234567 | Lab@cityhospital.pk
+================================================================================
+
+PATIENT LABORATORY REPORT
+
+Patient Information:
+--------------------
+Name: Muhammad Ahmed Khan
+Age: 35 Years
+Gender: Male
+Patient ID: CH-2025-001234
+Date of Collection: January 15, 2025
+Date of Report: January 16, 2025
+Referring Physician: Dr. Sarah Malik
+
+================================================================================
+                          COMPLETE BLOOD COUNT (CBC)
+================================================================================
+
+TEST NAME                    RESULT          NORMAL RANGE        UNIT
+--------------------------------------------------------------------------------
+Hemoglobin                   13.2            13.5-17.5           g/dL
+Total WBC Count              11.5 (H)        4.0-11.0            x10^3/uL
+RBC Count                    4.8             4.5-5.5             x10^6/uL
+Hematocrit                   41.2            40-50               %
+MCV                          85.8            80-100              fL
+MCH                          27.5            27-32               pg
+MCHC                         32.1            32-36               g/dL
+Platelet Count               245             150-400             x10^3/uL
+Neutrophils                  68              40-75               %
+Lymphocytes                  25              20-45               %
+Monocytes                    5               2-10                %
+Eosinophils                  2               1-6                 %
+Basophils                    0               0-1                 %
+
+================================================================================
+                            LIPID PROFILE
+================================================================================
+
+TEST NAME                    RESULT          NORMAL RANGE        UNIT
+--------------------------------------------------------------------------------
+Total Cholesterol            220 (H)         <200                mg/dL
+Triglycerides               165              <150                mg/dL
+HDL Cholesterol             42 (L)           >40                 mg/dL
+LDL Cholesterol             145 (H)          <100                mg/dL
+VLDL Cholesterol            33               <30                 mg/dL
+Cholesterol/HDL Ratio       5.2 (H)          <4.5
+
+================================================================================
+                          LIVER FUNCTION TEST
+================================================================================
+
+TEST NAME                    RESULT          NORMAL RANGE        UNIT
+--------------------------------------------------------------------------------
+Total Bilirubin             0.9              0.3-1.2             mg/dL
+Direct Bilirubin            0.3              0.1-0.3             mg/dL
+Indirect Bilirubin          0.6              0.2-0.9             mg/dL
+SGPT (ALT)                  45 (H)           7-40                U/L
+SGOT (AST)                  38              10-40               U/L
+Alkaline Phosphatase        95              44-147              U/L
+Total Protein               7.2              6.0-8.0             g/dL
+Albumin                     4.1              3.5-5.5             g/dL
+Globulin                    3.1              2.0-3.5             g/dL
+A/G Ratio                   1.32             1.0-2.0
+
+================================================================================
+                          KIDNEY FUNCTION TEST
+================================================================================
+
+TEST NAME                    RESULT          NORMAL RANGE        UNIT
+--------------------------------------------------------------------------------
+Blood Urea Nitrogen         15               7-20                mg/dL
+Creatinine                  1.0              0.7-1.3             mg/dL
+Uric Acid                   6.2              3.5-7.2             mg/dL
+Sodium (Na+)                140              136-145             mmol/L
+Potassium (K+)              4.2              3.5-5.1             mmol/L
+Chloride (Cl-)              102              98-107              mmol/L
+
+================================================================================
+                          BLOOD GLUCOSE TEST
+================================================================================
+
+TEST NAME                    RESULT          NORMAL RANGE        UNIT
+--------------------------------------------------------------------------------
+Fasting Blood Sugar         118 (H)          70-100              mg/dL
+HbA1c                       6.2 (H)          <5.7                %
+
+================================================================================
+                          THYROID FUNCTION TEST
+================================================================================
+
+TEST NAME                    RESULT          NORMAL RANGE        UNIT
+--------------------------------------------------------------------------------
+TSH                         3.8              0.4-4.0             mIU/L
+Free T3                     3.2              2.0-4.4             pg/mL
+Free T4                     1.3              0.9-1.7             ng/dL
+
+================================================================================
+
+REMARKS:
+--------
+1. Elevated WBC count - may indicate infection or inflammation
+2. Lipid profile shows elevated total cholesterol and LDL
+3. Low HDL cholesterol - cardiovascular risk factor
+4. Slightly elevated SGPT - monitor liver function
+5. Fasting blood sugar indicates prediabetic range
+6. HbA1c suggests impaired glucose tolerance
+
+RECOMMENDATIONS:
+----------------
+1. Dietary modifications - reduce saturated fats and refined sugars
+2. Regular exercise - at least 30 minutes daily
+3. Repeat lipid profile and glucose tests after 3 months
+4. Consider diabetes screening
+5. Follow up with physician for detailed evaluation
+
+================================================================================
+
+Laboratory Director: Dr. Imran Hassan, FCPS (Pathology)
+Digital Signature: Verified
+
+Report Generated: January 16, 2025 10:30 AM
+Authentication Code: CH-LAB-2025-001234-VERIFIED
+
+================================================================================
+                    This is a computer generated report
+           For queries contact: lab@cityhospital.pk | +92-21-1234567
+================================================================================
