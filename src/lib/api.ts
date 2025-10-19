@@ -70,17 +70,28 @@ export const reportsAPI = {
     }),
 };
 
+// Vitals data type
+export interface VitalsData {
+  date: string;
+  bloodPressure?: { systolic: number; diastolic: number };
+  bloodSugar?: number;
+  weight?: number;
+  heartRate?: number;
+  temperature?: number;
+  notes?: string;
+}
+
 // Vitals APIs
 export const vitalsAPI = {
   getAll: () => apiCall('/vitals'),
 
-  add: (data: any) =>
+  add: (data: VitalsData) =>
     apiCall('/vitals', {
       method: 'POST',
       body: JSON.stringify(data),
     }),
 
-  update: (id: string, data: any) =>
+  update: (id: string, data: Partial<VitalsData>) =>
     apiCall(`/vitals/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
@@ -116,6 +127,13 @@ export const familyMembersAPI = {
     }),
 };
 
+// User data type
+export interface User {
+  userId: string;
+  name: string;
+  email: string;
+}
+
 // Auth helper functions
 export const auth = {
   setToken: (token: string) => {
@@ -133,13 +151,13 @@ export const auth = {
 
   getToken,
 
-  setUser: (user: any) => {
+  setUser: (user: User) => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('user', JSON.stringify(user));
     }
   },
 
-  getUser: () => {
+  getUser: (): User | null => {
     if (typeof window !== 'undefined') {
       const user = localStorage.getItem('user');
       return user ? JSON.parse(user) : null;

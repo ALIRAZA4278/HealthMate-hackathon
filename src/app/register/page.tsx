@@ -42,8 +42,8 @@ export default function RegisterPage() {
       auth.setToken(response.token);
       auth.setUser(response.user);
       router.push('/dashboard');
-    } catch (err: any) {
-      setError(err.message || 'Registration failed');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Registration failed');
     } finally {
       setLoading(false);
     }
