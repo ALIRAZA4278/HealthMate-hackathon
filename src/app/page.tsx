@@ -462,7 +462,7 @@ export default function Home() {
               <div className="text-center">
                 <div className="text-6xl mb-6">{testimonials[activeTestimonial].image}</div>
                 <p className="text-xl text-gray-700 mb-6 italic">
-                  "{testimonials[activeTestimonial].text}"
+                  &ldquo;{testimonials[activeTestimonial].text}&rdquo;
                 </p>
                 <h4 className="text-lg font-bold text-gray-900">
                   {testimonials[activeTestimonial].name}
@@ -518,7 +518,7 @@ export default function Home() {
             </div>
             <div>
               <p className="text-sm text-gray-800 font-semibold mb-2">
-                <strong>Important Disclaimer:</strong> HealthMate's AI analysis is for informational and educational purposes only. It is NOT a substitute for professional medical advice, diagnosis, or treatment. Always consult your doctor or qualified healthcare provider before making any medical decisions.
+                <strong>Important Disclaimer:</strong> HealthMate&apos;s AI analysis is for informational and educational purposes only. It is NOT a substitute for professional medical advice, diagnosis, or treatment. Always consult your doctor or qualified healthcare provider before making any medical decisions.
               </p>
               <p className="text-sm text-gray-700">
                 <strong>اہم خبردار:</strong> HealthMate ka AI sirf samajhne aur seekhne ke liye hai. Yeh kisi bhi medical advice, diagnosis, ya ilaaj ka substitute nahi hai. Hamesha apne doctor ya qualified healthcare provider se consult karein pehle koi medical decision lene se.

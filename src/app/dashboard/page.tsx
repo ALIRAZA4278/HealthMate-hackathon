@@ -13,11 +13,37 @@ interface FamilyMember {
   customId?: string;
 }
 
+interface Report {
+  _id: string;
+  fileName: string;
+  fileType: string;
+  fileUrl: string;
+  testDate: string;
+  createdAt: string;
+}
+
+interface Vital {
+  _id: string;
+  date: string;
+  bloodPressure?: { systolic: number; diastolic: number };
+  bloodSugar?: number;
+  weight?: number;
+  heartRate?: number;
+  temperature?: number;
+  notes?: string;
+}
+
+interface User {
+  userId: string;
+  name: string;
+  email: string;
+}
+
 export default function DashboardPage() {
   const router = useRouter();
-  const [user, setUser] = useState<any>(null);
-  const [reports, setReports] = useState<any[]>([]);
-  const [vitals, setVitals] = useState<any[]>([]);
+  const [user, setUser] = useState<User | null>(null);
+  const [reports, setReports] = useState<Report[]>([]);
+  const [vitals, setVitals] = useState<Vital[]>([]);
   const [loading, setLoading] = useState(true);
   const [familyMembers, setFamilyMembers] = useState<FamilyMember[]>([]);
   const [showAddMember, setShowAddMember] = useState(false);

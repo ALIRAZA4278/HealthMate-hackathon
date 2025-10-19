@@ -24,8 +24,8 @@ export default function LoginPage() {
       auth.setToken(response.token);
       auth.setUser(response.user);
       router.push('/dashboard');
-    } catch (err: any) {
-      setError(err.message || 'Login failed');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Login failed');
     } finally {
       setLoading(false);
     }
@@ -103,7 +103,7 @@ export default function LoginPage() {
           {/* Register Link */}
           <div className="mt-6 text-center">
             <p className="text-gray-600">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link href="/register" className="text-indigo-600 font-medium hover:text-indigo-700">
                 Register here
               </Link>
