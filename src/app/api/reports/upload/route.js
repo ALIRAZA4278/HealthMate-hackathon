@@ -1,19 +1,19 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import File from '@/models/File';
 import AiInsight from '@/models/AiInsight';
-import { withAuth, AuthenticatedRequest } from '@/lib/middleware';
+import { withAuth } from '@/lib/middleware';
 import { uploadToCloudinary } from '@/lib/cloudinary';
 import { analyzemedicalReport } from '@/lib/gemini';
 
-export const POST = withAuth(async (req: AuthenticatedRequest) => {
+export const POST = withAuth(async (req) => {
   try {
     await dbConnect();
 
     const formData = await req.formData();
-    const file = formData.get('file') as File | null;
-    const fileType = formData.get('fileType') as string;
-    const testDate = formData.get('testDate') as string;
+    const file = formData.get('file');
+    const fileType = formData.get('fileType');
+    const testDate = formData.get('testDate');
 
     if (!file) {
       return NextResponse.json(

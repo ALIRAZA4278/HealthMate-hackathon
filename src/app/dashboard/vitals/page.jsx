@@ -25,9 +25,10 @@ export default function AddVitalsPage() {
     if (!auth.isAuthenticated()) {
       router.push('/login');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess(false);
@@ -47,7 +48,7 @@ export default function AddVitalsPage() {
     setLoading(true);
 
     try {
-      const vitalsData: any = {
+      const vitalsData = {
         date: formData.date,
       };
 
@@ -69,8 +70,8 @@ export default function AddVitalsPage() {
       setTimeout(() => {
         router.push('/dashboard');
       }, 1500);
-    } catch (err: any) {
-      setError(err.message || 'Failed to add vitals');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to add vitals');
     } finally {
       setLoading(false);
     }
@@ -278,7 +279,7 @@ export default function AddVitalsPage() {
             <li>• Measure BP in the morning before breakfast</li>
             <li>• Check blood sugar 2 hours after meals</li>
             <li>• Weigh yourself at the same time each day</li>
-            <li>• Keep notes about how you're feeling</li>
+            <li>• Keep notes about how you&apos;re feeling</li>
           </ul>
         </div>
       </div>

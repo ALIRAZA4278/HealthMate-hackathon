@@ -5,20 +5,12 @@ import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { auth, reportsAPI, vitalsAPI } from '@/lib/api';
 
-interface FamilyMember {
-  id: string;
-  name: string;
-  relation: string;
-  color: string;
-  customId?: string;
-}
-
 export default function FamilyMemberPage() {
   const router = useRouter();
   const params = useParams();
-  const [member, setMember] = useState<FamilyMember | null>(null);
-  const [reports, setReports] = useState<any[]>([]);
-  const [vitals, setVitals] = useState<any[]>([]);
+  const [member, setMember] = useState(null);
+  const [reports, setReports] = useState([]);
+  const [vitals, setVitals] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,7 +28,7 @@ export default function FamilyMemberPage() {
       const savedMembers = localStorage.getItem('familyMembers');
       if (savedMembers) {
         const members = JSON.parse(savedMembers);
-        const foundMember = members.find((m: FamilyMember) => m.id === params.id);
+        const foundMember = members.find((m) => m.id === params.id);
         if (foundMember) {
           setMember(foundMember);
         }
@@ -56,7 +48,7 @@ export default function FamilyMemberPage() {
     }
   };
 
-  const handleDeleteReport = async (reportId: string, e: React.MouseEvent) => {
+  const handleDeleteReport = async (reportId, e) => {
     e.preventDefault();
     e.stopPropagation();
 

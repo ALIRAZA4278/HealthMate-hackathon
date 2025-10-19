@@ -3,39 +3,31 @@ import bcrypt from 'bcryptjs';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
 
-export interface JWTPayload {
-  userId: string;
-  email: string;
-}
-
-export function generateToken(payload: JWTPayload): string {
+export function generateToken(payload) {
   return jwt.sign(payload, JWT_SECRET, {
     expiresIn: '7d', // Token expires in 7 days
   });
 }
 
-export function verifyToken(token: string): JWTPayload {
+export function verifyToken(token) {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload;
+    const decoded = jwt.verify(token, JWT_SECRET);
     return decoded;
   } catch {
     throw new Error('Invalid or expired token');
   }
 }
 
-export async function hashPassword(password: string): Promise<string> {
+export async function hashPassword(password) {
   const salt = await bcrypt.genSalt(10);
   return bcrypt.hash(password, salt);
 }
 
-export async function comparePassword(
-  password: string,
-  hashedPassword: string
-): Promise<boolean> {
+export async function comparePassword(password, hashedPassword) {
   return bcrypt.compare(password, hashedPassword);
 }
 
-export function extractTokenFromHeader(authHeader: string | null): string | null {
+export function extractTokenFromHeader(authHeader) {
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return null;
   }

@@ -7,7 +7,7 @@ import { auth, reportsAPI } from '@/lib/api';
 
 export default function UploadReportPage() {
   const router = useRouter();
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState(null);
   const [formData, setFormData] = useState({
     fileType: 'lab_report',
     testDate: '',
@@ -24,9 +24,10 @@ export default function UploadReportPage() {
     if (!auth.isAuthenticated()) {
       router.push('/login');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
 
@@ -48,7 +49,7 @@ export default function UploadReportPage() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess(false);
@@ -80,8 +81,8 @@ export default function UploadReportPage() {
       setTimeout(() => {
         router.push(`/dashboard/reports/${response.file._id}`);
       }, 1500);
-    } catch (err: any) {
-      setError(err.message || 'Upload failed');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Upload failed');
     } finally {
       setLoading(false);
     }

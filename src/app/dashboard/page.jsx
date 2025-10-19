@@ -5,50 +5,16 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { auth, reportsAPI, vitalsAPI, familyMembersAPI } from '@/lib/api';
 
-interface FamilyMember {
-  _id: string;
-  name: string;
-  relation: string;
-  color: string;
-  customId?: string;
-}
-
-interface Report {
-  _id: string;
-  fileName: string;
-  fileType: string;
-  fileUrl: string;
-  testDate: string;
-  createdAt: string;
-}
-
-interface Vital {
-  _id: string;
-  date: string;
-  bloodPressure?: { systolic: number; diastolic: number };
-  bloodSugar?: number;
-  weight?: number;
-  heartRate?: number;
-  temperature?: number;
-  notes?: string;
-}
-
-interface User {
-  userId: string;
-  name: string;
-  email: string;
-}
-
 export default function DashboardPage() {
   const router = useRouter();
-  const [user, setUser] = useState<User | null>(null);
-  const [reports, setReports] = useState<Report[]>([]);
-  const [vitals, setVitals] = useState<Vital[]>([]);
+  const [user, setUser] = useState(null);
+  const [reports, setReports] = useState([]);
+  const [vitals, setVitals] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [familyMembers, setFamilyMembers] = useState<FamilyMember[]>([]);
+  const [familyMembers, setFamilyMembers] = useState([]);
   const [showAddMember, setShowAddMember] = useState(false);
   const [showEditMember, setShowEditMember] = useState(false);
-  const [editingMember, setEditingMember] = useState<FamilyMember | null>(null);
+  const [editingMember, setEditingMember] = useState(null);
   const [newMember, setNewMember] = useState({ name: '', relation: '', color: '#ec4899', customId: '' });
   const [searchTerm, setSearchTerm] = useState('');
   const [filterDate, setFilterDate] = useState({ from: '', to: '' });
@@ -92,7 +58,7 @@ export default function DashboardPage() {
     }
   };
 
-  const handleDeleteReport = async (reportId: string, e: React.MouseEvent) => {
+  const handleDeleteReport = async (reportId, e) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -107,7 +73,7 @@ export default function DashboardPage() {
     }
   };
 
-  const handleDeleteVital = async (vitalId: string, e: React.MouseEvent) => {
+  const handleDeleteVital = async (vitalId, e) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -145,7 +111,7 @@ export default function DashboardPage() {
     }
   };
 
-  const handleEditMember = (member: FamilyMember) => {
+  const handleEditMember = (member) => {
     setEditingMember(member);
     setShowEditMember(true);
   };
@@ -173,7 +139,7 @@ export default function DashboardPage() {
     }
   };
 
-  const handleDeleteMember = async (memberId: string) => {
+  const handleDeleteMember = async (memberId) => {
     if (!confirm('Are you sure you want to delete this family member?')) return;
 
     try {
@@ -185,7 +151,7 @@ export default function DashboardPage() {
     }
   };
 
-  const handleOpenMember = (memberId: string) => {
+  const handleOpenMember = (memberId) => {
     router.push(`/dashboard/family/${memberId}`);
   };
 

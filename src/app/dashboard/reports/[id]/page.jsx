@@ -8,10 +8,10 @@ import { auth, reportsAPI } from '@/lib/api';
 export default function ViewReportPage() {
   const router = useRouter();
   const params = useParams();
-  const [report, setReport] = useState<any>(null);
-  const [insight, setInsight] = useState<any>(null);
+  const [report, setReport] = useState(null);
+  const [insight, setInsight] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [language, setLanguage] = useState<'english' | 'urdu'>('english');
+  const [language, setLanguage] = useState('english');
 
   useEffect(() => {
     if (!auth.isAuthenticated()) {
@@ -20,11 +20,12 @@ export default function ViewReportPage() {
     }
 
     loadReport();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadReport = async () => {
     try {
-      const data = await reportsAPI.getById(params.id as string);
+      const data = await reportsAPI.getById(params.id);
       setReport(data.report);
       setInsight(data.insight);
     } catch (error) {
@@ -149,7 +150,7 @@ export default function ViewReportPage() {
                       className="max-w-full h-auto rounded"
                       onError={(e) => {
                         e.currentTarget.style.display = 'none';
-                        e.currentTarget.parentElement!.innerHTML = '<p class="text-gray-500">Image preview not available</p>';
+                        e.currentTarget.parentElement.innerHTML = '<p class="text-gray-500">Image preview not available</p>';
                       }}
                     />
                   </div>
@@ -217,7 +218,7 @@ export default function ViewReportPage() {
                     <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
                       <h3 className="text-lg font-bold text-gray-900 mb-4">Home remedies</h3>
                       <ul className="space-y-3 text-sm">
-                        {insight.homeRemedies.slice(0, 3).map((remedy: any, index: number) => (
+                        {insight.homeRemedies.slice(0, 3).map((remedy, index) => (
                           <li key={index} className="flex items-start gap-2">
                             <span className="text-green-600 mt-0.5">•</span>
                             <div>
@@ -236,7 +237,7 @@ export default function ViewReportPage() {
                     <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
                       <h3 className="text-lg font-bold text-gray-900 mb-4">Questions for your doctor</h3>
                       <ul className="space-y-2 text-sm">
-                        {insight.questionsToAsk.slice(0, 3).map((item: any, index: number) => (
+                        {insight.questionsToAsk.slice(0, 3).map((item, index) => (
                           <li key={index} className="flex items-start gap-2">
                             <span className="text-pink-600 font-semibold">{index + 1}.</span>
                             <span className="text-gray-700">{item.question}</span>
@@ -274,7 +275,7 @@ export default function ViewReportPage() {
                           <div className="mb-3">
                             <ul className="space-y-1 text-sm">
                               {insight.foodRecommendations.recommended.slice(0, 3).map(
-                                (food: string, index: number) => (
+                                (food, index) => (
                                   <li key={index} className="flex items-start gap-2">
                                     <span className="text-green-600 mt-0.5">•</span>
                                     <span className="text-gray-700">{food}</span>
@@ -290,7 +291,7 @@ export default function ViewReportPage() {
                             <p className="text-xs font-semibold text-gray-500 mb-1">Avoid:</p>
                             <ul className="space-y-1 text-sm">
                               {insight.foodRecommendations.avoid.slice(0, 2).map(
-                                (food: string, index: number) => (
+                                (food, index) => (
                                   <li key={index} className="flex items-start gap-2">
                                     <span className="text-red-600 mt-0.5">•</span>
                                     <span className="text-gray-700">{food}</span>
@@ -311,7 +312,7 @@ export default function ViewReportPage() {
                       <span className="text-2xl">⚠️</span> Abnormal Values
                     </h3>
                     <div className="grid md:grid-cols-2 gap-3">
-                      {insight.abnormalValues.map((value: string, index: number) => (
+                      {insight.abnormalValues.map((value, index) => (
                         <div
                           key={index}
                           className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-lg"
@@ -339,7 +340,7 @@ export default function ViewReportPage() {
                             </h4>
                             <ul className="space-y-2">
                               {insight.foodRecommendations.recommended.map(
-                                (food: string, index: number) => (
+                                (food, index) => (
                                   <li key={index} className="flex items-start gap-2 text-sm">
                                     <span className="text-green-600 mt-0.5">•</span>
                                     <span className="text-gray-700">{food}</span>
@@ -357,7 +358,7 @@ export default function ViewReportPage() {
                             </h4>
                             <ul className="space-y-2">
                               {insight.foodRecommendations.avoid.map(
-                                (food: string, index: number) => (
+                                (food, index) => (
                                   <li key={index} className="flex items-start gap-2 text-sm">
                                     <span className="text-red-600 mt-0.5">•</span>
                                     <span className="text-gray-700">{food}</span>
@@ -378,7 +379,7 @@ export default function ViewReportPage() {
                       <span className="text-2xl">❓</span> All Questions to Ask Your Doctor
                     </h3>
                     <ul className="space-y-3">
-                      {insight.questionsToAsk.map((item: any, index: number) => (
+                      {insight.questionsToAsk.map((item, index) => (
                         <li key={index} className="flex items-start gap-3">
                           <span className="flex-shrink-0 w-7 h-7 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center text-sm font-semibold">
                             {index + 1}
@@ -397,7 +398,7 @@ export default function ViewReportPage() {
                       <span className="text-2xl">🏠</span> Detailed Home Remedies
                     </h3>
                     <div className="space-y-4">
-                      {insight.homeRemedies.map((remedy: any, index: number) => (
+                      {insight.homeRemedies.map((remedy, index) => (
                         <div
                           key={index}
                           className="border-l-4 border-green-500 pl-4 py-2 bg-green-50 rounded-r-lg"

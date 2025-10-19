@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import File from '@/models/File';
 import AiInsight from '@/models/AiInsight';
-import { withAuth, AuthenticatedRequest } from '@/lib/middleware';
+import { withAuth } from '@/lib/middleware';
 
 // GET all reports for logged-in user
-export const GET = withAuth(async (req: AuthenticatedRequest) => {
+export const GET = withAuth(async (req) => {
   try {
     await dbConnect();
 

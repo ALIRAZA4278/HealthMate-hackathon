@@ -9,10 +9,10 @@ const getToken = () => {
 };
 
 // Helper function to make API calls
-async function apiCall(endpoint: string, options: RequestInit = {}) {
+async function apiCall(endpoint, options = {}) {
   const token = getToken();
 
-  const headers: HeadersInit = {
+  const headers = {
     ...options.headers,
   };
 
@@ -39,13 +39,13 @@ async function apiCall(endpoint: string, options: RequestInit = {}) {
 
 // Auth APIs
 export const authAPI = {
-  register: (data: { name: string; email: string; password: string }) =>
+  register: (data) =>
     apiCall('/auth/register', {
       method: 'POST',
       body: JSON.stringify(data),
     }),
 
-  login: (data: { email: string; password: string }) =>
+  login: (data) =>
     apiCall('/auth/login', {
       method: 'POST',
       body: JSON.stringify(data),
@@ -54,7 +54,7 @@ export const authAPI = {
 
 // Reports APIs
 export const reportsAPI = {
-  upload: (formData: FormData) =>
+  upload: (formData) =>
     apiCall('/reports/upload', {
       method: 'POST',
       body: formData,
@@ -62,42 +62,31 @@ export const reportsAPI = {
 
   getAll: () => apiCall('/reports'),
 
-  getById: (id: string) => apiCall(`/reports/${id}`),
+  getById: (id) => apiCall(`/reports/${id}`),
 
-  delete: (id: string) =>
+  delete: (id) =>
     apiCall(`/reports/${id}`, {
       method: 'DELETE',
     }),
 };
 
-// Vitals data type
-export interface VitalsData {
-  date: string;
-  bloodPressure?: { systolic: number; diastolic: number };
-  bloodSugar?: number;
-  weight?: number;
-  heartRate?: number;
-  temperature?: number;
-  notes?: string;
-}
-
 // Vitals APIs
 export const vitalsAPI = {
   getAll: () => apiCall('/vitals'),
 
-  add: (data: VitalsData) =>
+  add: (data) =>
     apiCall('/vitals', {
       method: 'POST',
       body: JSON.stringify(data),
     }),
 
-  update: (id: string, data: Partial<VitalsData>) =>
+  update: (id, data) =>
     apiCall(`/vitals/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     }),
 
-  delete: (id: string) =>
+  delete: (id) =>
     apiCall(`/vitals/${id}`, {
       method: 'DELETE',
     }),
@@ -107,36 +96,29 @@ export const vitalsAPI = {
 export const familyMembersAPI = {
   getAll: () => apiCall('/family-members'),
 
-  getById: (id: string) => apiCall(`/family-members/${id}`),
+  getById: (id) => apiCall(`/family-members/${id}`),
 
-  create: (data: { name: string; relation: string; color?: string; customId?: string }) =>
+  create: (data) =>
     apiCall('/family-members', {
       method: 'POST',
       body: JSON.stringify(data),
     }),
 
-  update: (id: string, data: { name?: string; relation?: string; color?: string; customId?: string }) =>
+  update: (id, data) =>
     apiCall(`/family-members/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
     }),
 
-  delete: (id: string) =>
+  delete: (id) =>
     apiCall(`/family-members/${id}`, {
       method: 'DELETE',
     }),
 };
 
-// User data type
-export interface User {
-  userId: string;
-  name: string;
-  email: string;
-}
-
 // Auth helper functions
 export const auth = {
-  setToken: (token: string) => {
+  setToken: (token) => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('token', token);
     }
@@ -151,13 +133,13 @@ export const auth = {
 
   getToken,
 
-  setUser: (user: User) => {
+  setUser: (user) => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('user', JSON.stringify(user));
     }
   },
 
-  getUser: (): User | null => {
+  getUser: () => {
     if (typeof window !== 'undefined') {
       const user = localStorage.getItem('user');
       return user ? JSON.parse(user) : null;

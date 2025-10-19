@@ -27,13 +27,13 @@ export default function TimelinePage() {
       ]);
 
       // Combine reports and vitals into timeline
-      const reports = (reportsData.reports || []).map((report: any) => ({
+      const reports = (reportsData.reports || []).map((report) => ({
         ...report,
         type: 'report',
         date: new Date(report.testDate),
       }));
 
-      const vitals = (vitalsData.vitals || []).map((vital: any) => ({
+      const vitals = (vitalsData.vitals || []).map((vital) => ({
         ...vital,
         type: 'vital',
         date: new Date(vital.date),

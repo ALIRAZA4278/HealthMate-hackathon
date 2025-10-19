@@ -8,25 +8,8 @@ if (!API_KEY) {
 
 const genAI = new GoogleGenerativeAI(API_KEY);
 
-export interface MedicalReportAnalysis {
-  summaryEnglish: string;
-  summaryUrdu: string;
-  abnormalValues: string[];
-  questionsToAsk: { question: string }[];
-  foodRecommendations: {
-    avoid: string[];
-    recommended: string[];
-  };
-  homeRemedies: { remedy: string; description: string }[];
-}
-
-export async function analyzemedicalReport(
-  fileBuffer: Buffer,
-  mimeType: string,
-  fileType: string
-): Promise<MedicalReportAnalysis> {
+export async function analyzemedicalReport(fileBuffer, mimeType, fileType) {
   try {
-    // Use Gemini 1.5 Flash for faster processing (or use 1.5 Pro for better accuracy)
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
     const prompt = `You are a medical report analyzer. Analyze this ${fileType} medical report and provide:
@@ -74,7 +57,7 @@ Format your response as JSON with this structure:
     const response = await result.response;
     const text = response.text();
 
-    // Extract JSON from the response (Gemini might wrap it in markdown code blocks)
+    // Extract JSON from the response
     const jsonMatch = text.match(/```json\n?([\s\S]*?)\n?```/) || text.match(/\{[\s\S]*\}/);
 
     if (!jsonMatch) {
@@ -82,7 +65,7 @@ Format your response as JSON with this structure:
     }
 
     const jsonText = jsonMatch[1] || jsonMatch[0];
-    const analysis: MedicalReportAnalysis = JSON.parse(jsonText);
+    const analysis = JSON.parse(jsonText);
 
     return analysis;
   } catch (error) {
@@ -91,10 +74,7 @@ Format your response as JSON with this structure:
   }
 }
 
-export async function analyzeMedicalReportFromUrl(
-  fileUrl: string,
-  fileType: string
-): Promise<MedicalReportAnalysis> {
+export async function analyzeMedicalReportFromUrl(fileUrl, fileType) {
   try {
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
@@ -152,7 +132,7 @@ Format your response as JSON with this structure:
     }
 
     const jsonText = jsonMatch[1] || jsonMatch[0];
-    const analysis: MedicalReportAnalysis = JSON.parse(jsonText);
+    const analysis = JSON.parse(jsonText);
 
     return analysis;
   } catch (error) {

@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import Vitals from '@/models/Vitals';
-import { withAuth, AuthenticatedRequest } from '@/lib/middleware';
+import { withAuth } from '@/lib/middleware';
 
 // GET all vitals for logged-in user
-export const GET = withAuth(async (req: AuthenticatedRequest) => {
+export const GET = withAuth(async (req) => {
   try {
     await dbConnect();
 
@@ -23,7 +23,7 @@ export const GET = withAuth(async (req: AuthenticatedRequest) => {
 });
 
 // POST - Add new vitals entry
-export const POST = withAuth(async (req: AuthenticatedRequest) => {
+export const POST = withAuth(async (req) => {
   try {
     await dbConnect();
 
