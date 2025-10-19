@@ -130,31 +130,48 @@ export default function ViewReportPage() {
             </div>
 
             {/* File Preview */}
-            <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+            <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
               <h3 className="text-lg font-bold text-gray-900 mb-4">File Preview</h3>
-              <div className="border border-gray-200 rounded-lg overflow-hidden">
-                {report.fileUrl.endsWith('.pdf') ? (
-                  <iframe
-                    src={report.fileUrl}
-                    className="w-full h-96"
-                    title="Report Preview"
-                  />
+              <div className="border-2 border-gray-200 rounded-lg overflow-hidden bg-gray-50">
+                {report.fileUrl.toLowerCase().endsWith('.pdf') ? (
+                  <div className="relative">
+                    <iframe
+                      src={`${report.fileUrl}#toolbar=0`}
+                      className="w-full h-[500px]"
+                      title="Report Preview"
+                    />
+                  </div>
                 ) : (
-                  <img
-                    src={report.fileUrl}
-                    alt="Report"
-                    className="w-full h-auto"
-                  />
+                  <div className="flex items-center justify-center p-4">
+                    <img
+                      src={report.fileUrl}
+                      alt="Report"
+                      className="max-w-full h-auto rounded"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.parentElement!.innerHTML = '<p class="text-gray-500">Image preview not available</p>';
+                      }}
+                    />
+                  </div>
                 )}
               </div>
-              <a
-                href={report.fileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block mt-4 text-center text-pink-600 hover:text-pink-700 font-medium"
-              >
-                Open in New Tab →
-              </a>
+              <div className="mt-4 flex gap-3">
+                <a
+                  href={report.fileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 text-center bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition font-medium"
+                >
+                  Open Full View
+                </a>
+                <a
+                  href={report.fileUrl}
+                  download
+                  className="flex-1 text-center border border-indigo-600 text-indigo-600 px-4 py-2 rounded-lg hover:bg-indigo-50 transition font-medium"
+                >
+                  Download
+                </a>
+              </div>
             </div>
           </div>
 

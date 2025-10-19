@@ -19,6 +19,8 @@ export const uploadToCloudinary = (fileBuffer, folder = 'healthmate/reports') =>
       {
         folder: folder,
         resource_type: 'auto',
+        type: 'upload',
+        access_mode: 'public',
       },
       (error, result) => {
         if (error) {

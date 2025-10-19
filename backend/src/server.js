@@ -5,6 +5,7 @@ import connectDB from './config/db.js';
 import authRoutes from './routes/auth.routes.js';
 import reportRoutes from './routes/report.routes.js';
 import vitalsRoutes from './routes/vitals.routes.js';
+import familyMemberRoutes from './routes/familyMember.routes.js';
 
 // Load environment variables
 dotenv.config();
@@ -28,6 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/auth', authRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/vitals', vitalsRoutes);
+app.use('/api/family-members', familyMemberRoutes);
 
 // Health check
 app.get('/health', (req, res) => {

@@ -92,6 +92,30 @@ export const vitalsAPI = {
     }),
 };
 
+// Family Members APIs
+export const familyMembersAPI = {
+  getAll: () => apiCall('/family-members'),
+
+  getById: (id: string) => apiCall(`/family-members/${id}`),
+
+  create: (data: { name: string; relation: string; color?: string; customId?: string }) =>
+    apiCall('/family-members', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  update: (id: string, data: { name?: string; relation?: string; color?: string; customId?: string }) =>
+    apiCall(`/family-members/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }),
+
+  delete: (id: string) =>
+    apiCall(`/family-members/${id}`, {
+      method: 'DELETE',
+    }),
+};
+
 // Auth helper functions
 export const auth = {
   setToken: (token: string) => {

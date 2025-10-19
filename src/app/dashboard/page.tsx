@@ -3,10 +3,10 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { auth, reportsAPI, vitalsAPI } from '@/lib/api';
+import { auth, reportsAPI, vitalsAPI, familyMembersAPI } from '@/lib/api';
 
 interface FamilyMember {
-  id: string;
+  _id: string;
   name: string;
   relation: string;
   color: string;
@@ -38,23 +38,8 @@ export default function DashboardPage() {
     const userData = auth.getUser();
     setUser(userData);
 
-    // Load family members from localStorage
-    const savedMembers = localStorage.getItem('familyMembers');
-    if (savedMembers) {
-      setFamilyMembers(JSON.parse(savedMembers));
-    } else {
-      // Add default "You" member
-      const defaultMember = {
-        id: 'self',
-        name: userData?.name || 'You',
-        relation: 'Self',
-        color: '#ec4899'
-      };
-      setFamilyMembers([defaultMember]);
-      localStorage.setItem('familyMembers', JSON.stringify([defaultMember]));
-    }
-
     loadData();
+    loadFamilyMembers();
   }, []);
 
   const loadData = async () => {
@@ -69,6 +54,15 @@ export default function DashboardPage() {
       console.error('Error loading data:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadFamilyMembers = async () => {
+    try {
+      const data = await familyMembersAPI.getAll();
+      setFamilyMembers(data.members || []);
+    } catch (error) {
+      console.error('Error loading family members:', error);
     }
   };
 
@@ -102,26 +96,27 @@ export default function DashboardPage() {
     }
   };
 
-  const handleAddMember = () => {
+  const handleAddMember = async () => {
     if (!newMember.name || !newMember.relation) {
       alert('Please fill in name and relation');
       return;
     }
 
-    const member: FamilyMember = {
-      id: Date.now().toString(),
-      name: newMember.name,
-      relation: newMember.relation,
-      color: newMember.color,
-      customId: newMember.customId
-    };
+    try {
+      await familyMembersAPI.create({
+        name: newMember.name,
+        relation: newMember.relation,
+        color: newMember.color,
+        customId: newMember.customId
+      });
 
-    const updatedMembers = [...familyMembers, member];
-    setFamilyMembers(updatedMembers);
-    localStorage.setItem('familyMembers', JSON.stringify(updatedMembers));
-
-    setNewMember({ name: '', relation: '', color: '#ec4899', customId: '' });
-    setShowAddMember(false);
+      setNewMember({ name: '', relation: '', color: '#ec4899', customId: '' });
+      setShowAddMember(false);
+      loadFamilyMembers();
+    } catch (error) {
+      console.error('Error adding family member:', error);
+      alert('Failed to add family member');
+    }
   };
 
   const handleEditMember = (member: FamilyMember) => {
@@ -129,32 +124,39 @@ export default function DashboardPage() {
     setShowEditMember(true);
   };
 
-  const handleUpdateMember = () => {
+  const handleUpdateMember = async () => {
     if (!editingMember || !editingMember.name || !editingMember.relation) {
       alert('Please fill in name and relation');
       return;
     }
 
-    const updatedMembers = familyMembers.map(m =>
-      m.id === editingMember.id ? editingMember : m
-    );
-    setFamilyMembers(updatedMembers);
-    localStorage.setItem('familyMembers', JSON.stringify(updatedMembers));
-    setShowEditMember(false);
-    setEditingMember(null);
+    try {
+      await familyMembersAPI.update(editingMember._id, {
+        name: editingMember.name,
+        relation: editingMember.relation,
+        color: editingMember.color,
+        customId: editingMember.customId
+      });
+
+      setShowEditMember(false);
+      setEditingMember(null);
+      loadFamilyMembers();
+    } catch (error) {
+      console.error('Error updating family member:', error);
+      alert('Failed to update family member');
+    }
   };
 
-  const handleDeleteMember = (memberId: string) => {
-    if (memberId === 'self') {
-      alert('Cannot delete yourself');
-      return;
-    }
-
+  const handleDeleteMember = async (memberId: string) => {
     if (!confirm('Are you sure you want to delete this family member?')) return;
 
-    const updatedMembers = familyMembers.filter(m => m.id !== memberId);
-    setFamilyMembers(updatedMembers);
-    localStorage.setItem('familyMembers', JSON.stringify(updatedMembers));
+    try {
+      await familyMembersAPI.delete(memberId);
+      loadFamilyMembers();
+    } catch (error) {
+      console.error('Error deleting family member:', error);
+      alert('Failed to delete family member');
+    }
   };
 
   const handleOpenMember = (memberId: string) => {
@@ -242,8 +244,8 @@ export default function DashboardPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {familyMembers.map((member) => (
               <div
-                key={member.id}
-                onClick={() => handleOpenMember(member.id)}
+                key={member._id}
+                onClick={() => handleOpenMember(member._id)}
                 className="bg-white rounded-lg p-5 shadow-sm hover:shadow-md transition border border-gray-200 cursor-pointer"
               >
                 <div className="flex items-center gap-3 mb-4">
@@ -266,14 +268,12 @@ export default function DashboardPage() {
                   >
                     Edit
                   </button>
-                  {member.id !== 'self' && (
-                    <button
-                      onClick={(e) => { e.stopPropagation(); handleDeleteMember(member.id); }}
-                      className="text-red-600 text-sm font-medium hover:text-red-700"
-                    >
-                      Delete
-                    </button>
-                  )}
+                  <button
+                    onClick={(e) => { e.stopPropagation(); handleDeleteMember(member._id); }}
+                    className="text-red-600 text-sm font-medium hover:text-red-700"
+                  >
+                    Delete
+                  </button>
                 </div>
               </div>
             ))}
