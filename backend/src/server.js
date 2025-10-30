@@ -1,12 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-// Temporarily comment out for debugging
-// import connectDB from './config/db.js';
-// import authRoutes from './routes/auth.routes.js';
-// import reportRoutes from './routes/report.routes.js';
-// import vitalsRoutes from './routes/vitals.routes.js';
-// import familyMemberRoutes from './routes/familyMember.routes.js';
+import connectDB from './config/db.js';
+import authRoutes from './routes/auth.routes.js';
+import reportRoutes from './routes/report.routes.js';
+import vitalsRoutes from './routes/vitals.routes.js';
+import familyMemberRoutes from './routes/familyMember.routes.js';
 
 // Load environment variables
 dotenv.config();
@@ -16,22 +15,18 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Connect to MongoDB (run async, don't block)
-// connectDB().catch(err => console.error('MongoDB connection failed:', err));
+connectDB().catch(err => console.error('MongoDB connection failed:', err));
 
-// Middleware
-// Temporarily removing CORS to debug
-// app.use(cors({
-//   origin: true,
-//   credentials: true
-// }));
+// Middleware - CORS with all origins for testing
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes - Temporarily commented for debugging
-// app.use('/api/auth', authRoutes);
-// app.use('/api/reports', reportRoutes);
-// app.use('/api/vitals', vitalsRoutes);
-// app.use('/api/family-members', familyMemberRoutes);
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/reports', reportRoutes);
+app.use('/api/vitals', vitalsRoutes);
+app.use('/api/family-members', familyMemberRoutes);
 
 // Root route
 app.get('/', (req, res) => {
