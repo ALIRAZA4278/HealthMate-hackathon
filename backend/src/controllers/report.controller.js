@@ -5,7 +5,7 @@ import { analyzeMedicalReport } from '../utils/gemini.utils.js';
 
 export const uploadReport = async (req, res) => {
   try {
-    const { fileType, testDate, labHospital, doctor, price, notes } = req.body;
+    const { fileType, testDate, labHospital, doctor, price, notes, familyMemberId } = req.body;
 
     if (!req.file) {
       return res.status(400).json({ error: 'No file provided' });
@@ -21,6 +21,7 @@ export const uploadReport = async (req, res) => {
     // Save file info to database
     const savedFile = await File.create({
       userId: req.user.userId,
+      familyMemberId: familyMemberId || null,
       fileName: req.file.originalname,
       fileType: fileType || 'other',
       fileUrl: uploadResult.secure_url,
@@ -64,7 +65,9 @@ export const uploadReport = async (req, res) => {
 
 export const getReports = async (req, res) => {
   try {
-    const reports = await File.find({ userId: req.user.userId }).sort({ testDate: -1 });
+    const reports = await File.find({ userId: req.user.userId })
+      .populate('familyMemberId', 'name relation color')
+      .sort({ testDate: -1 });
 
     // Get AI insights for each report
     const reportsWithInsights = await Promise.all(
@@ -88,7 +91,8 @@ export const getReportById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const report = await File.findOne({ _id: id, userId: req.user.userId });
+    const report = await File.findOne({ _id: id, userId: req.user.userId })
+      .populate('familyMemberId', 'name relation color');
 
     if (!report) {
       return res.status(404).json({ error: 'Report not found' });

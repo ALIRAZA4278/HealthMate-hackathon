@@ -7,7 +7,7 @@ import { auth, reportsAPI, vitalsAPI } from '@/lib/api';
 
 export default function TimelinePage() {
   const router = useRouter();
-  const [timeline, setTimeline] = useState<any[]>([]);
+  const [timeline, setTimeline] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

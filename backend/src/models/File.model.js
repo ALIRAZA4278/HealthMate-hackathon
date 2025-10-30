@@ -7,6 +7,11 @@ const FileSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
+    familyMemberId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'FamilyMember',
+      default: null,
+    },
     fileName: {
       type: String,
       required: true,

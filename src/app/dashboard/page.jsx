@@ -18,6 +18,7 @@ export default function DashboardPage() {
   const [newMember, setNewMember] = useState({ name: '', relation: '', color: '#ec4899', customId: '' });
   const [searchTerm, setSearchTerm] = useState('');
   const [filterDate, setFilterDate] = useState({ from: '', to: '' });
+  const [filterFamilyMember, setFilterFamilyMember] = useState('');
 
   const colors = ['#ec4899', '#10b981', '#3b82f6', '#a855f7', '#8b5cf6', '#f97316'];
 
@@ -160,13 +161,26 @@ export default function DashboardPage() {
     router.push('/');
   };
 
-  // Filter reports based on search and date
+  // Filter reports based on search, date, and family member
   const filteredReports = reports.filter(report => {
     const matchesSearch = report.fileName.toLowerCase().includes(searchTerm.toLowerCase());
     const reportDate = new Date(report.testDate);
     const matchesDateFrom = !filterDate.from || reportDate >= new Date(filterDate.from);
     const matchesDateTo = !filterDate.to || reportDate <= new Date(filterDate.to);
-    return matchesSearch && matchesDateFrom && matchesDateTo;
+
+    // Family member filter logic
+    let matchesFamilyMember = true;
+    if (filterFamilyMember) {
+      if (filterFamilyMember === 'self') {
+        // Show reports without family member (self)
+        matchesFamilyMember = !report.familyMemberId;
+      } else {
+        // Show reports for specific family member
+        matchesFamilyMember = report.familyMemberId?._id === filterFamilyMember;
+      }
+    }
+
+    return matchesSearch && matchesDateFrom && matchesDateTo && matchesFamilyMember;
   });
 
   // Calculate vitals trends for graph
@@ -343,7 +357,7 @@ export default function DashboardPage() {
 
         {/* Search and Filter */}
         <div className="bg-white rounded-lg shadow-sm p-4 mb-6 border border-gray-200">
-          <div className="grid md:grid-cols-4 gap-3">
+          <div className="grid md:grid-cols-5 gap-3">
             <input
               type="text"
               placeholder="Search reports..."
@@ -352,8 +366,23 @@ export default function DashboardPage() {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
             />
 
+            <select
+              value={filterFamilyMember}
+              onChange={(e) => setFilterFamilyMember(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+            >
+              <option value="">All Members</option>
+              <option value="self">Self</option>
+              {familyMembers.map((member) => (
+                <option key={member._id} value={member._id}>
+                  {member.name}
+                </option>
+              ))}
+            </select>
+
             <input
               type="date"
+              placeholder="From"
               value={filterDate.from}
               onChange={(e) => setFilterDate({ ...filterDate, from: e.target.value })}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
@@ -361,13 +390,14 @@ export default function DashboardPage() {
 
             <input
               type="date"
+              placeholder="To"
               value={filterDate.to}
               onChange={(e) => setFilterDate({ ...filterDate, to: e.target.value })}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
             />
 
             <button
-              onClick={() => { setSearchTerm(''); setFilterDate({ from: '', to: '' }); }}
+              onClick={() => { setSearchTerm(''); setFilterDate({ from: '', to: '' }); setFilterFamilyMember(''); }}
               className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition"
             >
               Clear
@@ -403,6 +433,7 @@ export default function DashboardPage() {
                 <thead>
                   <tr className="border-b border-gray-200 text-left text-sm text-gray-600">
                     <th className="pb-3 font-semibold">Title</th>
+                    <th className="pb-3 font-semibold">Member</th>
                     <th className="pb-3 font-semibold">Test</th>
                     <th className="pb-3 font-semibold">Lab/Hospital</th>
                     <th className="pb-3 font-semibold">Doctor</th>
@@ -416,11 +447,26 @@ export default function DashboardPage() {
                   {filteredReports.map((report) => (
                     <tr key={report._id} className="border-b border-gray-100 hover:bg-gray-50">
                       <td className="py-4 text-sm">{report.fileName}</td>
+                      <td className="py-4 text-sm">
+                        {report.familyMemberId ? (
+                          <div className="flex items-center gap-2">
+                            <div
+                              className="w-6 h-6 rounded-md flex items-center justify-center text-white text-xs font-bold"
+                              style={{ backgroundColor: report.familyMemberId.color }}
+                            >
+                              {report.familyMemberId.name.charAt(0).toUpperCase()}
+                            </div>
+                            <span>{report.familyMemberId.name}</span>
+                          </div>
+                        ) : (
+                          <span className="text-gray-500">Self</span>
+                        )}
+                      </td>
                       <td className="py-4 text-sm">{report.fileType}</td>
-                      <td className="py-4 text-sm text-gray-600">-</td>
-                      <td className="py-4 text-sm text-gray-600">-</td>
+                      <td className="py-4 text-sm text-gray-600">{report.labHospital || '-'}</td>
+                      <td className="py-4 text-sm text-gray-600">{report.doctor || '-'}</td>
                       <td className="py-4 text-sm">{new Date(report.testDate).toLocaleDateString()}</td>
-                      <td className="py-4 text-sm text-gray-600">-</td>
+                      <td className="py-4 text-sm text-gray-600">{report.price || '-'}</td>
                       <td className="py-4">
                         <span className="inline-block px-2 py-1 bg-green-100 text-green-700 text-xs rounded">
                           normal

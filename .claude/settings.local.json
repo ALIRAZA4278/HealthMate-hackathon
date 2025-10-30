@@ -1,8 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(xargs sed -i 's/: string//g; s/: number//g; s/: boolean//g; s/: any//g; s/React\\.FC//g; s/React\\.MouseEvent//g; s/React\\.FormEvent//g; s/React\\.ChangeEvent//g')",
-      "Bash(xargs sed -i 's/, e: )/, e)/g; s/(e: )/(e)/g; s/(reportId, e: )/(reportId, e)/g')"
+      "Bash(npm run build:*)"
     ],
     "deny": [],
     "ask": []

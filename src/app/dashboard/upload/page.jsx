@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { auth, reportsAPI } from '@/lib/api';
+import { auth, reportsAPI, familyMembersAPI } from '@/lib/api';
 
 export default function UploadReportPage() {
   const router = useRouter();
@@ -14,18 +14,31 @@ export default function UploadReportPage() {
     labHospital: '',
     doctor: '',
     price: '',
-    notes: ''
+    notes: '',
+    familyMemberId: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [familyMembers, setFamilyMembers] = useState([]);
 
   useEffect(() => {
     if (!auth.isAuthenticated()) {
       router.push('/login');
+      return;
     }
+    loadFamilyMembers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const loadFamilyMembers = async () => {
+    try {
+      const data = await familyMembersAPI.getAll();
+      setFamilyMembers(data.members || []);
+    } catch (error) {
+      console.error('Error loading family members:', error);
+    }
+  };
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -75,6 +88,9 @@ export default function UploadReportPage() {
       submitData.append('doctor', formData.doctor);
       submitData.append('price', formData.price);
       submitData.append('notes', formData.notes);
+      if (formData.familyMemberId) {
+        submitData.append('familyMemberId', formData.familyMemberId);
+      }
 
       const response = await reportsAPI.upload(submitData);
       setSuccess(true);
@@ -186,6 +202,26 @@ export default function UploadReportPage() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
+              {/* Family Member Selection */}
+              <div>
+                <label htmlFor="familyMember" className="block text-sm font-medium text-gray-700 mb-2">
+                  Family Member
+                </label>
+                <select
+                  id="familyMember"
+                  value={formData.familyMemberId}
+                  onChange={(e) => setFormData({ ...formData, familyMemberId: e.target.value })}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+                >
+                  <option value="">Self (Default)</option>
+                  {familyMembers.map((member) => (
+                    <option key={member._id} value={member._id}>
+                      {member.name} ({member.relation})
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               {/* File Type */}
               <div>
                 <label htmlFor="fileType" className="block text-sm font-medium text-gray-700 mb-2">
