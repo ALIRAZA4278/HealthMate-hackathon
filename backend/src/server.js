@@ -1,11 +1,12 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import connectDB from './config/db.js';
-import authRoutes from './routes/auth.routes.js';
-import reportRoutes from './routes/report.routes.js';
-import vitalsRoutes from './routes/vitals.routes.js';
-import familyMemberRoutes from './routes/familyMember.routes.js';
+// Temporarily comment out for debugging
+// import connectDB from './config/db.js';
+// import authRoutes from './routes/auth.routes.js';
+// import reportRoutes from './routes/report.routes.js';
+// import vitalsRoutes from './routes/vitals.routes.js';
+// import familyMemberRoutes from './routes/familyMember.routes.js';
 
 // Load environment variables
 dotenv.config();
@@ -14,22 +15,33 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Connect to MongoDB
-connectDB();
+// Connect to MongoDB (run async, don't block)
+// connectDB().catch(err => console.error('MongoDB connection failed:', err));
 
 // Middleware
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true
-}));
+// Temporarily removing CORS to debug
+// app.use(cors({
+//   origin: true,
+//   credentials: true
+// }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/reports', reportRoutes);
-app.use('/api/vitals', vitalsRoutes);
-app.use('/api/family-members', familyMemberRoutes);
+// Routes - Temporarily commented for debugging
+// app.use('/api/auth', authRoutes);
+// app.use('/api/reports', reportRoutes);
+// app.use('/api/vitals', vitalsRoutes);
+// app.use('/api/family-members', familyMemberRoutes);
+
+// Root route
+app.get('/', (req, res) => {
+  res.json({ status: 'OK', message: 'HealthMate API Root' });
+});
+
+// Simple test endpoint
+app.get('/test', (req, res) => {
+  res.json({ status: 'OK', message: 'Simple test works!' });
+});
 
 // Health check
 app.get('/health', (req, res) => {
@@ -38,16 +50,22 @@ app.get('/health', (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error('ERROR:', err.stack);
   res.status(500).json({
     error: 'Something went wrong!',
-    message: process.env.NODE_ENV === 'development' ? err.message : undefined
+    message: err.message,
+    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
   });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server is running on port ${PORT}`);
-  console.log(`📍 API URL: http://localhost:${PORT}`);
-  console.log(`🏥 HealthMate Backend - Sehat ka Smart Dost`);
-});
+// Start server (only in local development, not on Vercel)
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server is running on port ${PORT}`);
+    console.log(`📍 API URL: http://localhost:${PORT}`);
+    console.log(`🏥 HealthMate Backend - Sehat ka Smart Dost`);
+  });
+}
+
+// Export for Vercel serverless
+export default app;

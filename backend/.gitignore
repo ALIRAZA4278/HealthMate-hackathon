@@ -31,3 +31,4 @@ build/
 
 # PM2
 .pm2/
+.vercel

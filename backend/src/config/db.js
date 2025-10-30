@@ -9,7 +9,10 @@ if (!process.env.MONGODB_URI) {
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(MONGODB_URI);
+    console.log('🔄 Attempting MongoDB connection...');
+    const conn = await mongoose.connect(MONGODB_URI, {
+      serverSelectionTimeoutMS: 5000
+    });
 
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
